@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Navigation from "./components/Navigation";
 
 export const metadata: Metadata = {
   title: {
@@ -12,7 +13,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navigation />
+        <main>{children}</main>
+        <footer>Copyright by The Wild Oasis</footer>
+      </body>
     </html>
   );
 }
