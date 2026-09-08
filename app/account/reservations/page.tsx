@@ -1,6 +1,10 @@
 import ReservationCard from "@/app/_components/ReservationCard";
 import type { BookingSummary } from "@/app/_types/data";
 
+export const metadata = {
+  title: "Reservations",
+};
+
 export default function Page() {
   // CHANGE
   const bookings: BookingSummary[] = [];
