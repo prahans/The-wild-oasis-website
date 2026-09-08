@@ -1,5 +1,6 @@
 import { eachDayOfInterval } from 'date-fns';
 import { getSupabase } from './supabase';
+import countryNames from './countries.json';
 import type {
   Booking,
   BookingSummary,
@@ -163,32 +164,11 @@ export async function getSettings(): Promise<Settings> {
 }
 
 export async function getCountries(): Promise<Country[]> {
-  try {
-    const res = await fetch(
-      'https://restcountries.com/v2/all?fields=name,flag'
-    );
-    if (!res.ok) throw new Error('Could not fetch countries');
-
-    const countries: unknown = await res.json();
-    if (!Array.isArray(countries) || !countries.every(isCountry)) {
-      throw new Error('Invalid country data');
-    }
-
-    return countries;
-  } catch {
-    throw new Error('Could not fetch countries');
-  }
-}
-
-function isCountry(value: unknown): value is Country {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    'name' in value &&
-    typeof value.name === 'string' &&
-    'flag' in value &&
-    typeof value.flag === 'string'
-  );
+  // Bundled from https://flagcdn.com/en/codes.json (countries/territories only).
+  // REST Countries retired its public v2/v3 endpoints; no request is needed here.
+  return Object.entries(countryNames)
+    .map(([code, name]) => ({ name, flag: `https://flagcdn.com/${code}.svg` }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'en'));
 }
 
 /////////////

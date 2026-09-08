@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function Counter({ users }) {
+export default function Counter({ users }: { users: readonly unknown[] }) {
   const [count, setCount] = useState(0);
   return (
     <>

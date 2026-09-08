@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CabinCard from "@/app/_components/CabinCard";
+import type { CabinSummary } from "@/app/_types/data";
 
 export const metadata: Metadata = {
   title: "Cabins",
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   // CHANGE
-  const cabins = [];
+  const cabins: CabinSummary[] = [];
 
   return (
     <div>
