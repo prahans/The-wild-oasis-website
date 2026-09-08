@@ -28,8 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts",
-    "app/_lib/data-service.js"
+    "**/*.mts"
   ],
   "exclude": ["node_modules"]
 }
