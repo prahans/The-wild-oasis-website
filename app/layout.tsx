@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Navigation from "./components/Navigation";
-import Logo from "./components/Logo";
+import Navigation from "./_components/Navigation";
+import Logo from "./_components/Logo";
 
 export const metadata: Metadata = {
   title: {
