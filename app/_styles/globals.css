@@ -54,10 +54,26 @@
   }
 }
 
-/* For date picker */
-.rdp {
-  --rdp-cell-size: 32px !important;
-  --rdp-accent-color: var(--color-accent-500) !important;
-  --rdp-background-color: var(--color-accent-600) !important;
-  margin: 0 !important;
+/* DayPicker v10: keep the calendar compact and match the cabin theme.
+   The extra class keeps these overrides independent of stylesheet load order. */
+.rdp-root.date-selector {
+  --rdp-day-height: 32px;
+  --rdp-day-width: 32px;
+  --rdp-day_button-height: 32px;
+  --rdp-day_button-width: 32px;
+  --rdp-accent-color: var(--color-accent-500);
+  --rdp-accent-background-color: var(--color-accent-600);
+  --rdp-range_middle-color: var(--color-primary-950);
+  --rdp-range_start-color: var(--color-primary-950);
+  --rdp-range_end-color: var(--color-primary-950);
+}
+
+.date-selector .rdp-dropdown {
+  color: var(--color-primary-100);
+  background-color: var(--color-primary-900);
+}
+
+.date-selector .rdp-day_button:hover:not(:disabled) {
+  background-color: var(--color-accent-600);
+  color: var(--color-primary-950);
 }

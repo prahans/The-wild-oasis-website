@@ -40,7 +40,7 @@ export async function getCabin(id: RecordId): Promise<Cabin | null> {
     .single();
 
   // For testing
-  // await new Promise((res) => setTimeout(res, 1000));
+  // await new Promise((res) => setTimeout(res, 2000));
 
   if (error) {
     console.error(error);
@@ -164,6 +164,9 @@ export async function getSettings(): Promise<Settings> {
     .from("settings")
     .select("*")
     .single();
+
+  // For testing
+  // await new Promise((res) => setTimeout(res, 5000));
 
   if (error) {
     console.error(error);
