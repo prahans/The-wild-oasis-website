@@ -1,15 +1,15 @@
 "use client";
 
 import { differenceInCalendarDays, startOfDay } from "date-fns";
-import { useState } from "react";
 import { DayPicker, type DateRange } from "react-day-picker";
 import "react-day-picker/style.css";
+import { useReservation } from "./ReservationContext";
 
 function DateSelector({ settings, bookedDates, cabin }) {
   // CHANGE
   const regularPrice = 23;
   const discount = 23;
-  const [range, setRange] = useState<DateRange | undefined>();
+  const { range, setRange, resetRange } = useReservation();
   const numNights =
     range?.from && range.to
       ? differenceInCalendarDays(range.to, range.from)
@@ -69,7 +69,7 @@ function DateSelector({ settings, bookedDates, cabin }) {
           <button
             type="button"
             className="border border-primary-800 py-2 px-4 text-sm font-semibold"
-            onClick={() => setRange(undefined)}
+            onClick={resetRange}
           >
             Clear
           </button>

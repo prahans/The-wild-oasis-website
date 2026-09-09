@@ -1,3 +1,5 @@
+"use client";
+
 import type { Cabin } from "@/app/_types/data";
 
 function ReservationForm({ cabin }: { cabin: Cabin }) {
