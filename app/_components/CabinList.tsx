@@ -1,8 +1,10 @@
 import CabinCard from "@/app/_components/CabinCard";
 import type { CabinSummary } from "@/app/_types/data";
 import { getCabins } from "../_lib/data-service";
+// import { unstable_noStore as noStore } from "next/cache";
 
 export default async function CabinList() {
+  // noStore();
   const cabins: CabinSummary[] = await getCabins();
 
   if (!cabins.length) return null;
