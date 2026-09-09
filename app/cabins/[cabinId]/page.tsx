@@ -14,8 +14,7 @@ export default async function Page({
     notFound();
   }
 
-  const { name, maxCapacity, image, description, id, regularPrice, discount } =
-    cabin;
+  const { name, maxCapacity, image, description } = cabin;
 
   return (
     <div className="max-w-6xl mx-auto mt-8">
