@@ -66,7 +66,6 @@ export async function deleteReservation(bookingId: RecordId) {
 }
 
 export async function updateBooking(formData: FormData): Promise<void> {
-  console.log(formData);
   const session = await auth();
   if (!session) throw new Error("You must be logged in");
   const guestId = session.user.guestId;
