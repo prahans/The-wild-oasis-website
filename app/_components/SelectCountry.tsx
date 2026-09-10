@@ -16,6 +16,8 @@ async function SelectCountry({ defaultCountry, name, id, className }: SelectCoun
 
   return (
     <select
+      // Remount when the saved country changes so defaultValue is reapplied.
+      key={defaultCountry}
       name={name}
       id={id}
       // Here we use a trick to encode BOTH the country name and the flag into the value. Then we split them up again later in the server action
