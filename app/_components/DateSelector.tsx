@@ -1,18 +1,41 @@
 "use client";
 
-import { differenceInCalendarDays, startOfDay } from "date-fns";
+import {
+  differenceInCalendarDays,
+  isWithinInterval,
+  startOfDay,
+} from "date-fns";
 import { DayPicker, type DateRange } from "react-day-picker";
+import type { Cabin, Settings } from "@/app/_types/data";
 import "react-day-picker/style.css";
 import { useReservation } from "./ReservationContext";
 
-function DateSelector({ settings, bookedDates, cabin }) {
-  // CHANGE
-  const regularPrice = 23;
-  const discount = 23;
+function isAlreadyBooked(
+  range: DateRange | undefined,
+  datesArr: Date[],
+): boolean {
+  const from = range?.from;
+  const to = range?.to;
+  if (!from || !to) return false;
+
+  return datesArr.some((date) =>
+    isWithinInterval(date, { start: from, end: to }),
+  );
+}
+
+type DateSelectorProps = {
+  settings: Settings;
+  bookedDates: Date[];
+  cabin: Cabin;
+};
+
+function DateSelector({ settings, bookedDates, cabin }: DateSelectorProps) {
+  const { regularPrice, discount } = cabin;
   const { range, setRange, resetRange } = useReservation();
+  const displayRange = isAlreadyBooked(range, bookedDates) ? undefined : range;
   const numNights =
-    range?.from && range.to
-      ? differenceInCalendarDays(range.to, range.from)
+    displayRange?.from && displayRange.to
+      ? differenceInCalendarDays(displayRange.to, displayRange.from)
       : 0;
   const cabinPrice = numNights * (regularPrice - discount);
   const today = startOfDay(new Date());
@@ -26,18 +49,19 @@ function DateSelector({ settings, bookedDates, cabin }) {
       <DayPicker
         className="date-selector mt-12 mb-8 place-self-center"
         mode="range"
-        selected={range}
+        selected={displayRange}
         onSelect={setRange}
         min={minBookingLength}
         max={maxBookingLength}
         startMonth={today}
         endMonth={endMonth}
-        disabled={[{ before: today }, { after: endMonth }]}
+        disabled={[{ before: today }, { after: endMonth }, bookedDates]}
         captionLayout="dropdown"
         numberOfMonths={2}
+        excludeDisabled
       />
 
-      <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[72px]">
+      <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-18">
         <div className="flex items-baseline gap-6">
           <p className="flex gap-2 items-baseline">
             {discount > 0 ? (
