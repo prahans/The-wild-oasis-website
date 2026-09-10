@@ -8,6 +8,9 @@ export async function updateGuest(formData: FormData): Promise<void> {
   const session = await auth();
   if (!session) throw new Error("You must be logged in");
 
+  const guestId = session.user.guestId;
+  if (guestId === undefined) throw new Error("Guest profile could not be found");
+
   const nationalID = formData.get("nationalID");
   if (
     typeof nationalID !== "string" ||
@@ -31,7 +34,7 @@ export async function updateGuest(formData: FormData): Promise<void> {
   const { error } = await getSupabase()
     .from("guests")
     .update(updateDate)
-    .eq("id", session.user.guestId);
+    .eq("id", guestId);
 
   if (error) throw new Error("Guest could not be updated");
 }
