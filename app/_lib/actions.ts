@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { auth, signOut } from "./auth";
 import { signIn } from "./auth";
 import { getSupabase } from "./supabase";
@@ -9,7 +10,8 @@ export async function updateGuest(formData: FormData): Promise<void> {
   if (!session) throw new Error("You must be logged in");
 
   const guestId = session.user.guestId;
-  if (guestId === undefined) throw new Error("Guest profile could not be found");
+  if (guestId === undefined)
+    throw new Error("Guest profile could not be found");
 
   const nationalID = formData.get("nationalID");
   if (
@@ -37,6 +39,7 @@ export async function updateGuest(formData: FormData): Promise<void> {
     .eq("id", guestId);
 
   if (error) throw new Error("Guest could not be updated");
+  revalidatePath("/account/profile");
 }
 
 export async function signInAction() {

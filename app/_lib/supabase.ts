@@ -13,7 +13,7 @@ export function getSupabase(): SupabaseClient<Database> {
 
   if (!url || !key) {
     throw new Error(
-      "Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local before using the data service.",
+      "Set SUPABASE_URL and SUPABASE_KEY in .env.local before using the data service.",
     );
   }
 

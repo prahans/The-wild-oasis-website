@@ -64,7 +64,7 @@ export async function getCabinPrice(id: RecordId): Promise<CabinPrice | null> {
 }
 
 export const getCabins = async function (): Promise<CabinSummary[]> {
-  const { data, error } = await getSupabase()
+  const { data, error, status } = await getSupabase()
     .from("cabins")
     .select("id, name, maxCapacity, regularPrice, discount, image")
     .order("name");
@@ -73,8 +73,17 @@ export const getCabins = async function (): Promise<CabinSummary[]> {
   // await new Promise((res) => setTimeout(res, 1000));
 
   if (error) {
-    console.error(error);
-    throw new Error("Cabins could not be loaded");
+    console.error(
+      "getCabins failed:",
+      JSON.stringify({
+        status,
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      }),
+    );
+    throw new Error("Cabins could not be loaded", { cause: error });
   }
 
   return data;
