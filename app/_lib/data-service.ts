@@ -217,7 +217,7 @@ export async function createBooking(newBooking: NewBooking): Promise<Booking> {
 
 /////////////
 // UPDATE
-
+/*
 // The updatedFields is an object which should ONLY contain the updated data
 export async function updateGuest(
   id: RecordId,
@@ -271,3 +271,4 @@ export async function deleteBooking(id: RecordId): Promise<null> {
   }
   return data;
 }
+*/
