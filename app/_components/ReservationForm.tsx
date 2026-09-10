@@ -5,9 +5,10 @@ import type { User } from "next-auth";
 import { useReservation } from "./ReservationContext";
 import { differenceInCalendarDays } from "date-fns";
 import { createBooking } from "@/app/_lib/actions";
+import SubmitButton from "./SubmitButton";
 
 function ReservationForm({ cabin, user }: { cabin: Cabin; user: User }) {
-  const { range } = useReservation();
+  const { range, resetRange } = useReservation();
   const { maxCapacity, regularPrice, discount, id } = cabin;
 
   const startDate = range?.from;
@@ -45,7 +46,11 @@ function ReservationForm({ cabin, user }: { cabin: Cabin; user: User }) {
       </div>
 
       <form
-        action={createBookingWithData}
+        // action={createBookingWithData}
+        action={async (formData) => {
+          await createBookingWithData(formData);
+          resetRange();
+        }}
         className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
       >
         <div className="space-y-2">
@@ -80,13 +85,13 @@ function ReservationForm({ cabin, user }: { cabin: Cabin; user: User }) {
         </div>
 
         <div className="flex justify-end items-center gap-6">
-          {numNights <= 0 && (
-            <p className="text-primary-300 text-base">Start by selecting dates</p>
+          {!(startDate && endDate) ? (
+            <p className="text-primary-300 text-base">
+              Start by selecting dates
+            </p>
+          ) : (
+            <SubmitButton pendingLabel="Reserving...">Reserve now</SubmitButton>
           )}
-
-          <button disabled={numNights <= 0} className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-            Reserve now
-          </button>
         </div>
       </form>
     </div>

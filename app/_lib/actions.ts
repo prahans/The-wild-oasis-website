@@ -4,7 +4,11 @@ import { revalidatePath } from "next/cache";
 import { auth, signOut } from "./auth";
 import { signIn } from "./auth";
 import { getSupabase } from "./supabase";
-import type { CreateBookingData, RecordId } from "@/app/_types/data";
+import type {
+  CreateBookingData,
+  NewBooking,
+  RecordId,
+} from "@/app/_types/data";
 import { getBookings } from "./data-service";
 import { redirect } from "next/navigation";
 
@@ -50,7 +54,13 @@ export async function createBooking(
   formData: FormData,
 ): Promise<void> {
   const { startDate, endDate } = bookingData;
-  if (!startDate || !endDate || endDate <= startDate) {
+  if (
+    !(startDate instanceof Date) ||
+    !(endDate instanceof Date) ||
+    !Number.isFinite(startDate.getTime()) ||
+    !Number.isFinite(endDate.getTime()) ||
+    endDate <= startDate
+  ) {
     throw new Error("Please select valid check-in and check-out dates");
   }
   const session = await auth();
@@ -58,11 +68,18 @@ export async function createBooking(
   const guestId = session.user.guestId;
   if (guestId === undefined)
     throw new Error("Guest profile could not be found");
-  const newBooking = {
+  const observations = formData.get("observations");
+  if (observations !== null && typeof observations !== "string") {
+    throw new Error("Observations must be text");
+  }
+
+  const newBooking: NewBooking = {
     ...bookingData,
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
     guestId,
     numGuests: Number(formData.get("numGuests")),
-    observations: formData.get("observations")?.slice(0, 1000),
+    observations: observations?.slice(0, 1000) ?? null,
     extrasPrice: 0,
     totalPrice: bookingData.cabinPrice,
     isPaid: false,
@@ -70,7 +87,11 @@ export async function createBooking(
     status: "unconfirmed",
   };
 
-  console.log(newBooking);
+  const { error } = await getSupabase().from("bookings").insert([newBooking]);
+
+  if (error) throw new Error("Booking could not be created");
+  revalidatePath(`/cabins/${bookingData.cabinId}`);
+  redirect("/cabins/thankyou");
 }
 
 export async function deleteBooking(bookingId: RecordId) {

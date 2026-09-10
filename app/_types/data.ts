@@ -41,7 +41,11 @@ export type Booking = {
   endDate: string;
   numNights: number;
   numGuests: number;
+  cabinPrice: number;
+  extrasPrice: number;
   totalPrice: number;
+  isPaid: boolean;
+  hasBreakfast: boolean;
   guestId: number;
   cabinId: number;
   status: string;

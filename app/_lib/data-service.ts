@@ -208,6 +208,7 @@ export async function createGuest(newGuest: NewGuest): Promise<null> {
   return data;
 }
 
+/*
 export async function createBooking(newBooking: NewBooking): Promise<Booking> {
   const { data, error } = await getSupabase()
     .from("bookings")
@@ -223,6 +224,7 @@ export async function createBooking(newBooking: NewBooking): Promise<Booking> {
 
   return data;
 }
+*/
 
 /////////////
 // UPDATE
