@@ -53,6 +53,14 @@ export type NewBooking = Omit<Booking, "id" | "created_at" | "observations"> &
 
 export type BookingUpdate = Partial<Omit<Booking, "id" | "created_at">>;
 
+export type CreateBookingData = {
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  numNights: number;
+  cabinPrice: number;
+  cabinId: number;
+};
+
 export type BookingSummary = Pick<
   Booking,
   | "id"

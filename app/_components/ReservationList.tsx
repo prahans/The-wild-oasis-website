@@ -3,7 +3,7 @@
 import type { BookingSummary, RecordId } from "@/app/_types/data";
 import ReservationCard from "./ReservationCard";
 import { useOptimistic } from "react";
-import { deleteReservation } from "@/app/_lib/actions";
+import { deleteBooking } from "@/app/_lib/actions";
 
 type ReservationListProps = {
   bookings: BookingSummary[];
@@ -18,7 +18,7 @@ export default function ReservationList({ bookings }: ReservationListProps) {
 
   async function handleDelete(bookingId: RecordId): Promise<void> {
     optimisticDelete(bookingId);
-    await deleteReservation(bookingId);
+    await deleteBooking(bookingId);
   }
 
   return (

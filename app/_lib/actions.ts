@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth, signOut } from "./auth";
 import { signIn } from "./auth";
 import { getSupabase } from "./supabase";
-import type { RecordId } from "@/app/_types/data";
+import type { CreateBookingData, RecordId } from "@/app/_types/data";
 import { getBookings } from "./data-service";
 import { redirect } from "next/navigation";
 
@@ -45,7 +45,35 @@ export async function updateGuest(formData: FormData): Promise<void> {
   revalidatePath("/account/profile");
 }
 
-export async function deleteReservation(bookingId: RecordId) {
+export async function createBooking(
+  bookingData: CreateBookingData,
+  formData: FormData,
+): Promise<void> {
+  const { startDate, endDate } = bookingData;
+  if (!startDate || !endDate || endDate <= startDate) {
+    throw new Error("Please select valid check-in and check-out dates");
+  }
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+  const guestId = session.user.guestId;
+  if (guestId === undefined)
+    throw new Error("Guest profile could not be found");
+  const newBooking = {
+    ...bookingData,
+    guestId,
+    numGuests: Number(formData.get("numGuests")),
+    observations: formData.get("observations")?.slice(0, 1000),
+    extrasPrice: 0,
+    totalPrice: bookingData.cabinPrice,
+    isPaid: false,
+    hasBreakfast: false,
+    status: "unconfirmed",
+  };
+
+  console.log(newBooking);
+}
+
+export async function deleteBooking(bookingId: RecordId) {
   const session = await auth();
   if (!session) throw new Error("You must be logged in");
   const guestId = session.user.guestId;
