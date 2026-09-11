@@ -270,7 +270,7 @@ While building this project, I practiced and improved my understanding of:
 
 ## 👨‍💻 Author
 
-**Prahans Panuhar**
+**Anurag Panuhar**
 
 - GitHub: https://github.com/prahans
 - LinkedIn: https://www.linkedin.com/in/prahans-panuhar-786265381/
